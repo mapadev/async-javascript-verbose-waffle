@@ -26,9 +26,9 @@ function readFileThenDo(next) {
   });
 }
 
-readFileThenDo(data => {
+readFileThenDo((err, data) => {
   if (err) {
-    console.log(err)
+    console.log("moo error:", err)
   } else {
     console.log(data);
   }
@@ -45,15 +45,15 @@ const fs = require("fs");
 function readFileThenDo(next) {
   fs.readFile("./blah.nofile", (err, data) => {
     if (err) throw err;
-    next(data);
+    next(null, data);
   });
 }
 // Hint use try..catch
 try {
-  readFileThenDo(data => {
+  readFileThenDo((_, data) => {
     console.log(data);
   });
 } catch(error) {
-  console.log("Moo:", error);
+  console.log("Moo error:", error);
 }
 ```
