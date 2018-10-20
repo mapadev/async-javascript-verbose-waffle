@@ -16,6 +16,29 @@ Promise.all(promises).then(values => {
 });
 ```
 
+```js
+const util = require("util");
+const fs = require("fs");
+const readFile = util.promisify(fs.readFile);
+
+const files = ["./files/demofile.txt", "./files/demofile.other.txt"];
+
+// (async () => {
+//   for (let file of files) {
+//     const result = await readFile(file, "utf8");
+//     console.log(result)
+//   }
+// })();
+
+// better, bc more performant (Promise.all starts promises at the same time, while above example blocks reading another file until previous one is done):
+(async () => {
+  const promises = files.map(file => readFile(file, "utf8"));
+  const results = await Promise.all(promises);
+  console.log(results);
+})();
+
+```
+
 # Question 2
 
 Again convert the promise version of the multi-file loader over to using async/await but using a custom async iterator with the following syntax
